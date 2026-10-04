@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>HOT CHILLIES - Digital Menu</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,9 +18,6 @@
     .fade-out { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
   </style>
 </head>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex justify-center antialiased selection:bg-amber-500 selection:text-zinc-950">
 
   <div id="splashScreen" class="fixed inset-0 z-50 bg-zinc-950 flex flex-col items-center justify-center p-6 text-center">
@@ -70,7 +70,7 @@
     </div>
 
     <div class="flex gap-1.5 px-4 mt-3 overflow-x-auto no-scrollbar py-1" id="categoryPills"></div>
-    <main class="px-4 mt-3 space-y-2 flex-1" id="menuContainer"></main>
+    <main class="px-4 mt-3 space-y-4 flex-1" id="menuContainer"></main>
 
     <footer class="text-center py-6 text-[10px] text-zinc-600 uppercase tracking-widest font-semibold">
       Digital Menu • HOT CHILLIES
@@ -137,7 +137,7 @@
       const filtered = MENU_ITEMS.filter(item => {
         const matchesCat = currentCategory === "All" || item.category === currentCategory;
         const matchesDiet = currentDiet === "all" || (currentDiet === "veg" && item.isVeg) || (currentDiet === "nonveg" && !item.isVeg);
-        const matchesQuery = !query || item.name.toLowerCase().includes(query);
+        const matchesQuery = !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
         return matchesCat && matchesDiet && matchesQuery;
       });
 
@@ -151,21 +151,45 @@
         return;
       }
 
-      container.innerHTML = filtered.map(item => `
-        <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3 flex justify-between items-center gap-3 shadow-sm hover:border-zinc-700/80 transition">
-          <div class="flex-1 pr-2">
-            <div class="flex items-center gap-2">
-              <span class="inline-flex items-center justify-center w-3.5 h-3.5 border ${item.isVeg ? 'border-emerald-500' : 'border-rose-500'} p-0.5 rounded-xs shrink-0">
-                <span class="w-1.5 h-1.5 rounded-full ${item.isVeg ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
-              </span>
-              <h3 class="font-medium text-xs text-zinc-100">${item.name}</h3>
+      container.innerHTML = "";
+
+      // Group by categories
+      const categoriesToRender = currentCategory === "All" 
+        ? [...new Set(filtered.map(i => i.category))]
+        : [currentCategory];
+
+      categoriesToRender.forEach(cat => {
+        const catItems = filtered.filter(i => i.category === cat);
+        if (catItems.length === 0) return;
+
+        let sectionHtml = `
+          <div class="space-y-2">
+            <div class="flex items-center gap-2 pt-1 pb-0.5">
+              <span class="w-1.5 h-3.5 bg-amber-500 rounded-full"></span>
+              <h2 class="text-xs font-black uppercase tracking-wider text-amber-400">${cat}</h2>
+              <span class="text-[10px] text-zinc-500 font-semibold">(${catItems.length})</span>
+            </div>
+        `;
+
+        sectionHtml += catItems.map(item => `
+          <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3 flex justify-between items-center gap-3 shadow-sm hover:border-zinc-700/80 transition">
+            <div class="flex-1 pr-2">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-3.5 h-3.5 border ${item.isVeg ? 'border-emerald-500' : 'border-rose-500'} p-0.5 rounded-xs shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full ${item.isVeg ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
+                </span>
+                <h3 class="font-medium text-xs text-zinc-100">${item.name}</h3>
+              </div>
+            </div>
+            <div class="font-bold text-amber-400 text-xs whitespace-nowrap bg-zinc-950/80 px-2.5 py-1.5 rounded-xl border border-zinc-800/60">
+              ₹${item.price}/-
             </div>
           </div>
-          <div class="font-bold text-amber-400 text-xs whitespace-nowrap bg-zinc-950/80 px-2.5 py-1.5 rounded-xl border border-zinc-800/60">
-            ₹${item.price}/-
-          </div>
-        </div>
-      `).join('');
+        `).join('');
+
+        sectionHtml += `</div>`;
+        container.innerHTML += sectionHtml;
+      });
     }
 
     function shareMenu() {
