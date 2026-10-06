@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>python generate.py HOT - Digital Menu</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    #splashScreen { transition: opacity 0.4s ease-out, visibility 0.4s ease-out; }
+    .fade-out { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex justify-center antialiased selection:bg-amber-500 selection:text-zinc-950">
+
+  <div id="splashScreen" class="fixed inset-0 z-50 bg-zinc-950 flex flex-col items-center justify-center p-6 text-center">
+    <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-amber-600 to-amber-400 text-zinc-950 font-black flex items-center justify-center text-3xl shadow-xl shadow-amber-500/20 ring-4 ring-amber-500/20 mb-5 animate-pulse">
+      PY
+    </div>
+    <h1 class="text-2xl font-black tracking-tight uppercase text-zinc-100 mb-1">python generate.py HOT</h1>
+    <p class="text-xs font-semibold text-amber-400/90 uppercase tracking-widest">Digital Menu</p>
+    <div class="mt-8 flex items-center gap-2 text-[11px] text-zinc-500 font-mono">
+      <i class="fa-solid fa-circle-notch fa-spin text-amber-500 text-xs"></i>
+      <span>Loading menu...</span>
+    </div>
+  </div>
+
+  <div class="w-full max-w-md min-h-screen bg-zinc-950 border-x border-zinc-900 flex flex-col relative shadow-2xl pb-16">
+    <header class="sticky top-0 z-40 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-zinc-950 font-black flex items-center justify-center text-sm shadow-md">
+          PY
+        </div>
+        <div>
+          <h1 class="font-bold text-sm text-zinc-100 leading-tight uppercase">python generate.py HOT</h1>
+          <p class="text-[11px] text-amber-400/80 font-medium">Touchless Menu</p>
+        </div>
+      </div>
+      <button onclick="shareMenu()" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 active:scale-95 flex items-center justify-center text-zinc-300 transition cursor-pointer">
+        <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i>
+      </button>
+    </header>
+
+    <div class="px-4 mt-3 space-y-2.5">
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-zinc-500 text-xs"></i>
+        <input type="text" id="searchInput" oninput="filterDishes()" placeholder="Search dishes..." 
+          class="w-full bg-zinc-900/90 border border-zinc-800 rounded-xl py-2 pl-9 pr-8 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500 transition">
+        <button onclick="clearSearch()" id="clearBtn" class="hidden absolute right-3 top-2.5 text-zinc-500 hover:text-zinc-300 text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="setDietFilter('all')" id="diet-all" class="diet-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-400 transition cursor-pointer">All</button>
+        <button onclick="setDietFilter('veg')" id="diet-veg" class="diet-btn text-[11px] font-semibold px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Veg
+        </button>
+        <button onclick="setDietFilter('nonveg')" id="diet-nonveg" class="diet-btn text-[11px] font-semibold px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-rose-400 transition flex items-center gap-1.5 cursor-pointer">
+          <span class="w-2 h-2 rounded-full bg-rose-500"></span> Non-Veg
+        </button>
+      </div>
+    </div>
+
+    <div class="flex gap-1.5 px-4 mt-3 overflow-x-auto no-scrollbar py-1" id="categoryPills"></div>
+    <main class="px-4 mt-3 space-y-4 flex-1" id="menuContainer"></main>
+
+    <footer class="text-center py-6 text-[10px] text-zinc-600 uppercase tracking-widest font-semibold">
+      Digital Menu • python generate.py HOT
+    </footer>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        const splash = document.getElementById("splashScreen");
+        if (splash) splash.classList.add("fade-out");
+      }, 700);
+    });
+
+    const MENU_ITEMS = [{"num": 1, "category": "Biryanis & Pulaos", "name": "Ghee Rice", "price": "200", "isVeg": true, "desc": ""}, {"num": 2, "category": "Biryanis & Pulaos", "name": "Jeera Rice", "price": "200", "isVeg": true, "desc": ""}, {"num": 3, "category": "Biryanis & Pulaos", "name": "Kaju Pulao", "price": "300", "isVeg": true, "desc": ""}, {"num": 4, "category": "Biryanis & Pulaos", "name": "Mushroom Biryani", "price": "280", "isVeg": true, "desc": ""}, {"num": 5, "category": "Biryanis & Pulaos", "name": "Mushroom Pulao", "price": "280", "isVeg": true, "desc": ""}, {"num": 6, "category": "Biryanis & Pulaos", "name": "Mutter Pulao", "price": "240", "isVeg": true, "desc": ""}, {"num": 7, "category": "Biryanis & Pulaos", "name": "Paneer Biryani", "price": "280", "isVeg": true, "desc": ""}, {"num": 8, "category": "Biryanis & Pulaos", "name": "Paneer Pulao", "price": "280", "isVeg": true, "desc": ""}, {"num": 9, "category": "Biryanis & Pulaos", "name": "Steamed Basmati Rice", "price": "150", "isVeg": true, "desc": ""}, {"num": 10, "category": "Biryanis & Pulaos", "name": "Veg Dum Biryani", "price": "240", "isVeg": true, "desc": ""}, {"num": 11, "category": "Biryanis & Pulaos", "name": "Veg Kofta Biryani", "price": "280", "isVeg": true, "desc": ""}, {"num": 12, "category": "Biryanis & Pulaos", "name": "Veg Pulao", "price": "240", "isVeg": true, "desc": ""}, {"num": 13, "category": "Chop Suey", "name": "American Chop Suey (Paneer)", "price": "290", "isVeg": true, "desc": ""}, {"num": 14, "category": "Chop Suey", "name": "American Chop Suey (Veg)", "price": "250", "isVeg": true, "desc": ""}, {"num": 15, "category": "Chop Suey", "name": "Chinese Chop Suey (Paneer)", "price": "290", "isVeg": true, "desc": ""}, {"num": 16, "category": "Chop Suey", "name": "Chinese Chop Suey (Veg)", "price": "250", "isVeg": true, "desc": ""}, {"num": 17, "category": "Curries & Gravies", "name": "Aloo Capsicum Dry", "price": "220", "isVeg": true, "desc": ""}, {"num": 18, "category": "Curries & Gravies", "name": "Aloo Capsicum Masala", "price": "220", "isVeg": true, "desc": ""}, {"num": 19, "category": "Curries & Gravies", "name": "Aloo Gobi Adraki", "price": "220", "isVeg": true, "desc": ""}, {"num": 20, "category": "Curries & Gravies", "name": "Aloo Gobi Dry", "price": "220", "isVeg": true, "desc": ""}, {"num": 21, "category": "Curries & Gravies", "name": "Aloo Jeera", "price": "220", "isVeg": true, "desc": ""}, {"num": 22, "category": "Curries & Gravies", "name": "Aloo Mutter", "price": "220", "isVeg": true, "desc": ""}, {"num": 23, "category": "Curries & Gravies", "name": "Aloo Palak", "price": "220", "isVeg": true, "desc": ""}, {"num": 24, "category": "Curries & Gravies", "name": "Baby Corn Masala", "price": "240", "isVeg": true, "desc": ""}, {"num": 25, "category": "Curries & Gravies", "name": "Baingan Fry", "price": "220", "isVeg": true, "desc": ""}, {"num": 26, "category": "Curries & Gravies", "name": "Baingan Masala", "price": "220", "isVeg": true, "desc": ""}, {"num": 27, "category": "Curries & Gravies", "name": "Bhindi Do Pyaza", "price": "220", "isVeg": true, "desc": ""}, {"num": 28, "category": "Curries & Gravies", "name": "Bhindi Fry", "price": "220", "isVeg": true, "desc": ""}, {"num": 29, "category": "Curries & Gravies", "name": "Bhindi Masala", "price": "220", "isVeg": true, "desc": ""}, {"num": 30, "category": "Curries & Gravies", "name": "Capsicum Baby Corn Masala", "price": "240", "isVeg": true, "desc": ""}, {"num": 31, "category": "Curries & Gravies", "name": "Dal Fry", "price": "190", "isVeg": true, "desc": ""}, {"num": 32, "category": "Curries & Gravies", "name": "Dal Makhni", "price": "220", "isVeg": true, "desc": ""}, {"num": 33, "category": "Curries & Gravies", "name": "Dal Palak", "price": "190", "isVeg": true, "desc": ""}, {"num": 34, "category": "Curries & Gravies", "name": "Dal Tadka", "price": "190", "isVeg": true, "desc": ""}, {"num": 35, "category": "Curries & Gravies", "name": "Dal Tomato", "price": "190", "isVeg": true, "desc": ""}, {"num": 36, "category": "Curries & Gravies", "name": "Kaju Masala", "price": "270", "isVeg": true, "desc": ""}, {"num": 37, "category": "Curries & Gravies", "name": "Kaju Mushroom", "price": "270", "isVeg": true, "desc": ""}, {"num": 38, "category": "Curries & Gravies", "name": "Kaju Paneer", "price": "270", "isVeg": true, "desc": ""}, {"num": 39, "category": "Curries & Gravies", "name": "Kofta Malai", "price": "240", "isVeg": true, "desc": ""}, {"num": 40, "category": "Curries & Gravies", "name": "Kofta Veg", "price": "240", "isVeg": true, "desc": ""}, {"num": 41, "category": "Curries & Gravies", "name": "Mushroom Kadai", "price": "240", "isVeg": true, "desc": ""}, {"num": 42, "category": "Curries & Gravies", "name": "Mushroom Masala", "price": "240", "isVeg": true, "desc": ""}, {"num": 43, "category": "Curries & Gravies", "name": "Mushroom Mutter", "price": "240", "isVeg": true, "desc": ""}, {"num": 44, "category": "Curries & Gravies", "name": "Mutter Palak", "price": "220", "isVeg": true, "desc": ""}, {"num": 45, "category": "Curries & Gravies", "name": "Paneer Butter Masala", "price": "240", "isVeg": true, "desc": ""}, {"num": 46, "category": "Curries & Gravies", "name": "Paneer Do Pyaza", "price": "240", "isVeg": true, "desc": ""}, {"num": 47, "category": "Curries & Gravies", "name": "Paneer Kadai", "price": "240", "isVeg": true, "desc": ""}, {"num": 48, "category": "Curries & Gravies", "name": "Paneer Makhni", "price": "240", "isVeg": true, "desc": ""}, {"num": 49, "category": "Curries & Gravies", "name": "Paneer Mutter", "price": "240", "isVeg": true, "desc": ""}, {"num": 50, "category": "Curries & Gravies", "name": "Paneer Palak", "price": "240", "isVeg": true, "desc": ""}, {"num": 51, "category": "Curries & Gravies", "name": "Paneer Shahi", "price": "240", "isVeg": true, "desc": ""}, {"num": 52, "category": "Curries & Gravies", "name": "Paneer Tikka Masala", "price": "240", "isVeg": true, "desc": ""}, {"num": 53, "category": "Curries & Gravies", "name": "Plain Palak", "price": "220", "isVeg": true, "desc": ""}, {"num": 54, "category": "Curries & Gravies", "name": "Veg Curry", "price": "220", "isVeg": true, "desc": ""}, {"num": 55, "category": "Curries & Gravies", "name": "Veg Do Pyaza", "price": "220", "isVeg": true, "desc": ""}, {"num": 56, "category": "Curries & Gravies", "name": "Veg Kadai", "price": "220", "isVeg": true, "desc": ""}, {"num": 57, "category": "Curries & Gravies", "name": "Veg Kolhapuri", "price": "220", "isVeg": true, "desc": ""}, {"num": 58, "category": "Fried Rice", "name": "Baby Corn Fried Rice", "price": "250", "isVeg": true, "desc": ""}, {"num": 59, "category": "Fried Rice", "name": "Mushroom Fried Rice", "price": "250", "isVeg": true, "desc": ""}, {"num": 60, "category": "Fried Rice", "name": "Paneer Fried Rice", "price": "250", "isVeg": true, "desc": ""}, {"num": 61, "category": "Fried Rice", "name": "Veg Fried Rice", "price": "230", "isVeg": true, "desc": ""}, {"num": 62, "category": "Kebabs & Tandoori", "name": "Achari Paneer Tikka", "price": "300", "isVeg": true, "desc": ""}, {"num": 63, "category": "Kebabs & Tandoori", "name": "Dahi Ke Kebab", "price": "300", "isVeg": true, "desc": ""}, {"num": 64, "category": "Kebabs & Tandoori", "name": "Hariyali Paneer Tikka", "price": "300", "isVeg": true, "desc": ""}, {"num": 65, "category": "Kebabs & Tandoori", "name": "Hara Bhara Kebab", "price": "280", "isVeg": true, "desc": ""}, {"num": 66, "category": "Kebabs & Tandoori", "name": "Malai Paneer Tikka", "price": "300", "isVeg": true, "desc": ""}, {"num": 67, "category": "Kebabs & Tandoori", "name": "Mushroom Stuffed Kebab", "price": "300", "isVeg": true, "desc": ""}, {"num": 68, "category": "Kebabs & Tandoori", "name": "Paneer Afghani Kebab", "price": "300", "isVeg": true, "desc": ""}, {"num": 69, "category": "Kebabs & Tandoori", "name": "Paneer Tikka", "price": "300", "isVeg": true, "desc": ""}, {"num": 70, "category": "Kebabs & Tandoori", "name": "Paneer Zafrani Tikka", "price": "300", "isVeg": true, "desc": ""}, {"num": 71, "category": "Kebabs & Tandoori", "name": "Tandoori Broccoli", "price": "330", "isVeg": true, "desc": ""}, {"num": 72, "category": "Kebabs & Tandoori", "name": "Tandoori Gobi", "price": "280", "isVeg": true, "desc": ""}, {"num": 73, "category": "Kebabs & Tandoori", "name": "Veg Sheek Kebab", "price": "280", "isVeg": true, "desc": ""}, {"num": 74, "category": "Noodles", "name": "Baby Corn Noodles", "price": "250", "isVeg": true, "desc": ""}, {"num": 75, "category": "Noodles", "name": "Mushroom Noodles", "price": "250", "isVeg": true, "desc": ""}, {"num": 76, "category": "Noodles", "name": "Paneer Noodles", "price": "250", "isVeg": true, "desc": ""}, {"num": 77, "category": "Noodles", "name": "Veg Noodles", "price": "230", "isVeg": true, "desc": ""}, {"num": 78, "category": "Rotis & Breads", "name": "Butter Naan", "price": "50", "isVeg": true, "desc": ""}, {"num": 79, "category": "Rotis & Breads", "name": "Butter Tandoori Roti (Whole Wheat)", "price": "40", "isVeg": true, "desc": ""}, {"num": 80, "category": "Rotis & Breads", "name": "Cheese Naan", "price": "80", "isVeg": true, "desc": ""}, {"num": 81, "category": "Rotis & Breads", "name": "Garlic Naan", "price": "60", "isVeg": true, "desc": ""}, {"num": 82, "category": "Rotis & Breads", "name": "Kulcha", "price": "50", "isVeg": true, "desc": ""}, {"num": 83, "category": "Rotis & Breads", "name": "Masala Kulcha", "price": "60", "isVeg": true, "desc": ""}, {"num": 84, "category": "Rotis & Breads", "name": "Naan", "price": "40", "isVeg": true, "desc": ""}, {"num": 85, "category": "Rotis & Breads", "name": "Phulkas (Whole Wheat) - 2 Pieces", "price": "30", "isVeg": true, "desc": ""}, {"num": 86, "category": "Rotis & Breads", "name": "Tandoori Ajwain Laccha Paratha (Whole Wheat)", "price": "55", "isVeg": true, "desc": ""}, {"num": 87, "category": "Rotis & Breads", "name": "Tandoori Laccha Paratha (Whole Wheat)", "price": "50", "isVeg": true, "desc": ""}, {"num": 88, "category": "Rotis & Breads", "name": "Tandoori Roti (Whole Wheat)", "price": "35", "isVeg": true, "desc": ""}, {"num": 89, "category": "Salads & Raita", "name": "Bhoondi Raita", "price": "80", "isVeg": true, "desc": ""}, {"num": 90, "category": "Salads & Raita", "name": "Carrot Raita", "price": "80", "isVeg": true, "desc": ""}, {"num": 91, "category": "Salads & Raita", "name": "Carrot Salad", "price": "80", "isVeg": true, "desc": ""}, {"num": 92, "category": "Salads & Raita", "name": "Green Salad", "price": "80", "isVeg": true, "desc": ""}, {"num": 93, "category": "Salads & Raita", "name": "Kheera Raita", "price": "80", "isVeg": true, "desc": ""}, {"num": 94, "category": "Salads & Raita", "name": "Masala Papad", "price": "40", "isVeg": true, "desc": ""}, {"num": 95, "category": "Salads & Raita", "name": "Onion Raita", "price": "80", "isVeg": true, "desc": ""}, {"num": 96, "category": "Soups", "name": "Dhaniya Shorba", "price": "120", "isVeg": true, "desc": ""}, {"num": 97, "category": "Soups", "name": "Mushroom Shorba", "price": "140", "isVeg": true, "desc": ""}, {"num": 98, "category": "Soups", "name": "Tomato Shorba", "price": "120", "isVeg": true, "desc": ""}, {"num": 99, "category": "South Indian Rice", "name": "Bisibhele Bath", "price": "150", "isVeg": true, "desc": ""}, {"num": 100, "category": "South Indian Rice", "name": "Curd Rice", "price": "150", "isVeg": true, "desc": ""}, {"num": 101, "category": "South Indian Rice", "name": "Ghee Pongal", "price": "150", "isVeg": true, "desc": ""}, {"num": 102, "category": "South Indian Rice", "name": "Lemon Rice", "price": "150", "isVeg": true, "desc": ""}, {"num": 103, "category": "South Indian Rice", "name": "Tomato Rice", "price": "150", "isVeg": true, "desc": ""}, {"num": 104, "category": "Subbayya Gari Special Tiffins", "name": "Subbayya Gari Dosa", "price": "200", "isVeg": true, "desc": ""}, {"num": 105, "category": "Subbayya Gari Special Tiffins", "name": "Subbayya Gari Idli", "price": "120", "isVeg": true, "desc": ""}, {"num": 106, "category": "Subbayya Gari Special Tiffins", "name": "Subbayya Gari Pesarattu", "price": "200", "isVeg": true, "desc": ""}, {"num": 107, "category": "Thai Curries", "name": "Green Curry (Paneer)", "price": "290", "isVeg": true, "desc": ""}, {"num": 108, "category": "Thai Curries", "name": "Green Curry (Veg)", "price": "250", "isVeg": true, "desc": ""}, {"num": 109, "category": "Thai Curries", "name": "Red Curry (Paneer)", "price": "290", "isVeg": true, "desc": ""}, {"num": 110, "category": "Thai Curries", "name": "Red Curry (Veg)", "price": "250", "isVeg": true, "desc": ""}, {"num": 111, "category": "Tiffins - Dosa", "name": "70mm Dosa", "price": "200", "isVeg": true, "desc": ""}, {"num": 112, "category": "Tiffins - Dosa", "name": "Baby Corn Dosa", "price": "160", "isVeg": true, "desc": ""}, {"num": 113, "category": "Tiffins - Dosa", "name": "Beetroot Dosa", "price": "120", "isVeg": true, "desc": ""}, {"num": 114, "category": "Tiffins - Dosa", "name": "Butter Masala Dosa", "price": "120", "isVeg": true, "desc": ""}, {"num": 115, "category": "Tiffins - Dosa", "name": "Butter Onion Dosa", "price": "120", "isVeg": true, "desc": ""}, {"num": 116, "category": "Tiffins - Dosa", "name": "Butter Plain Dosa", "price": "100", "isVeg": true, "desc": ""}, {"num": 117, "category": "Tiffins - Dosa", "name": "Carrot Dosa", "price": "120", "isVeg": true, "desc": ""}, {"num": 118, "category": "Tiffins - Dosa", "name": "Corn Dosa", "price": "160", "isVeg": true, "desc": ""}, {"num": 119, "category": "Tiffins - Dosa", "name": "Ghee Karam Dosa", "price": "130", "isVeg": true, "desc": ""}, {"num": 120, "category": "Tiffins - Dosa", "name": "Masala Dosa", "price": "100", "isVeg": true, "desc": ""}, {"num": 121, "category": "Tiffins - Dosa", "name": "Mushroom Dosa", "price": "160", "isVeg": true, "desc": ""}, {"num": 122, "category": "Tiffins - Dosa", "name": "Onion Dosa", "price": "100", "isVeg": true, "desc": ""}, {"num": 123, "category": "Tiffins - Dosa", "name": "Onion Masala Dosa", "price": "110", "isVeg": true, "desc": ""}, {"num": 124, "category": "Tiffins - Dosa", "name": "Onion Rava Dosa", "price": "120", "isVeg": true, "desc": ""}, {"num": 125, "category": "Tiffins - Dosa", "name": "Onion Rava Masala Dosa", "price": "130", "isVeg": true, "desc": ""}, {"num": 126, "category": "Tiffins - Dosa", "name": "Palak Dosa", "price": "140", "isVeg": true, "desc": ""}, {"num": 127, "category": "Tiffins - Dosa", "name": "Palak Paneer Dosa", "price": "160", "isVeg": true, "desc": ""}, {"num": 128, "category": "Tiffins - Dosa", "name": "Paneer Dosa", "price": "160", "isVeg": true, "desc": ""}, {"num": 129, "category": "Tiffins - Dosa", "name": "Plain Dosa", "price": "85", "isVeg": true, "desc": ""}, {"num": 130, "category": "Tiffins - Dosa", "name": "Rava Dosa", "price": "100", "isVeg": true, "desc": ""}, {"num": 131, "category": "Tiffins - Dosa", "name": "Rava Masala Dosa", "price": "120", "isVeg": true, "desc": ""}, {"num": 132, "category": "Tiffins - Dosa", "name": "Set Dosa 3 Pcs", "price": "130", "isVeg": true, "desc": ""}, {"num": 133, "category": "Tiffins - Idly", "name": "Beetroot Idly", "price": "90", "isVeg": true, "desc": ""}, {"num": 134, "category": "Tiffins - Idly", "name": "Button Idly", "price": "80", "isVeg": true, "desc": ""}, {"num": 135, "category": "Tiffins - Idly", "name": "Carrot Idly", "price": "90", "isVeg": true, "desc": ""}, {"num": 136, "category": "Tiffins - Idly", "name": "Ghee Idly", "price": "70", "isVeg": true, "desc": ""}, {"num": 137, "category": "Tiffins - Idly", "name": "Guntur Idly", "price": "90", "isVeg": true, "desc": ""}, {"num": 138, "category": "Tiffins - Idly", "name": "Idly", "price": "60", "isVeg": true, "desc": ""}, {"num": 139, "category": "Tiffins - Idly", "name": "Sambar Idly", "price": "75", "isVeg": true, "desc": ""}];
+    let currentCategory = "All";
+    let currentDiet = "all";
+
+    function initCategories() {
+      const categories = ["All", ...new Set(MENU_ITEMS.map(i => i.category))];
+      const pillsDiv = document.getElementById("categoryPills");
+      pillsDiv.innerHTML = categories.map(cat => `
+        <button onclick="selectCategory('${cat}')" id="cat-btn-${cat.replace(/\s+/g, '-')}" 
+          class="cat-pill whitespace-nowrap px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer active:scale-95 ${cat === 'All' ? 'bg-amber-500 text-zinc-950 font-bold' : 'bg-zinc-900 border border-zinc-800 text-zinc-300'}">
+          ${cat}
+        </button>
+      `).join('');
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll(".cat-pill").forEach(el => {
+        el.className = "cat-pill whitespace-nowrap px-3.5 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer active:scale-95 bg-zinc-900 border border-zinc-800 text-zinc-300";
+      });
+      const activeBtn = document.getElementById(`cat-btn-${cat.replace(/\s+/g, '-')}`);
+      if (activeBtn) activeBtn.className = "cat-pill whitespace-nowrap px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer active:scale-95 bg-amber-500 text-zinc-950";
+      filterDishes();
+    }
+
+    function setDietFilter(type) {
+      currentDiet = type;
+      document.querySelectorAll(".diet-btn").forEach(el => {
+        el.className = "diet-btn text-[11px] font-semibold px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400 transition flex items-center gap-1.5 cursor-pointer";
+      });
+      const active = document.getElementById(`diet-${type}`);
+      if (type === 'all') active.className = "diet-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-400 transition cursor-pointer";
+      if (type === 'veg') active.className = "diet-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 transition flex items-center gap-1.5 cursor-pointer";
+      if (type === 'nonveg') active.className = "diet-btn text-[11px] font-bold px-3 py-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 text-rose-400 transition flex items-center gap-1.5 cursor-pointer";
+      filterDishes();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById("searchInput");
+      input.value = "";
+      document.getElementById("clearBtn").classList.add("hidden");
+      filterDishes();
+    }
+
+    function filterDishes() {
+      const input = document.getElementById("searchInput");
+      const query = input.value.toLowerCase().trim();
+      document.getElementById("clearBtn").classList.toggle("hidden", query.length === 0);
+
+      const filtered = MENU_ITEMS.filter(item => {
+        const matchesCat = currentCategory === "All" || item.category === currentCategory;
+        const matchesDiet = currentDiet === "all" || (currentDiet === "veg" && item.isVeg) || (currentDiet === "nonveg" && !item.isVeg);
+        const matchesQuery = !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
+        return matchesCat && matchesDiet && matchesQuery;
+      });
+
+      const container = document.getElementById("menuContainer");
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-16 text-zinc-500">
+            <i class="fa-solid fa-utensils text-2xl mb-2 text-zinc-700"></i>
+            <p class="text-xs">No matching dishes found</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = "";
+
+      // Group by categories
+      const categoriesToRender = currentCategory === "All" 
+        ? [...new Set(filtered.map(i => i.category))]
+        : [currentCategory];
+
+      categoriesToRender.forEach(cat => {
+        const catItems = filtered.filter(i => i.category === cat);
+        if (catItems.length === 0) return;
+
+        let sectionHtml = `
+          <div class="space-y-2">
+            <div class="flex items-center gap-2 pt-1 pb-0.5">
+              <span class="w-1.5 h-3.5 bg-amber-500 rounded-full"></span>
+              <h2 class="text-xs font-black uppercase tracking-wider text-amber-400">${cat}</h2>
+              <span class="text-[10px] text-zinc-500 font-semibold">(${catItems.length})</span>
+            </div>
+        `;
+
+        sectionHtml += catItems.map(item => `
+          <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3 flex justify-between items-center gap-3 shadow-sm hover:border-zinc-700/80 transition">
+            <div class="flex-1 pr-2">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-3.5 h-3.5 border ${item.isVeg ? 'border-emerald-500' : 'border-rose-500'} p-0.5 rounded-xs shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full ${item.isVeg ? 'bg-emerald-500' : 'bg-rose-500'}"></span>
+                </span>
+                <h3 class="font-medium text-xs text-zinc-100">${item.name}</h3>
+              </div>
+            </div>
+            <div class="font-bold text-amber-400 text-xs whitespace-nowrap bg-zinc-950/80 px-2.5 py-1.5 rounded-xl border border-zinc-800/60">
+              ₹${item.price}/-
+            </div>
+          </div>
+        `).join('');
+
+        sectionHtml += `</div>`;
+        container.innerHTML += sectionHtml;
+      });
+    }
+
+    function shareMenu() {
+      if (navigator.share) {
+        navigator.share({ title: "python generate.py HOT Menu", url: window.location.href });
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+      }
+    }
+
+    initCategories();
+    filterDishes();
+  </script>
+</body>
+</html>
